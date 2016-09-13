@@ -5,8 +5,8 @@ RUN apt-get update
 RUN apt-get install haproxy -y
 COPY haproxy.cfg /etc/haproxy/haproxy.cfg
 
-RUN mkdir -p /opt/certis
-COPY blockchain.ibm.com.pem /opt/certs/blockchain.ibm.com.pem
+RUN mkdir -p /opt/certs
+COPY us.blockchain.ibm.com.cert /opt/certs/blockchain.ibm.com.pem
 
 RUN mkdir -p /cp-demo
 COPY . /cp-demo/
@@ -15,5 +15,6 @@ WORKDIR /cp-demo
 
 RUN chmod +x start.sh
 
-CMD ["start.sh"]
+EXPOSE 3000
+CMD ["/cp-demo/start.sh"]
 

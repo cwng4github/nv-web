@@ -152,6 +152,8 @@ var ibc = new Ibc1();
 //          }
 //     };
 
+/* [cwng] 20160912 - remove the original hardcoded bluemix peers and replaced with local docker peers */
+/*
 var manual =  {
    "credentials": {
             "peers": [
@@ -256,7 +258,64 @@ var manual =  {
                }
             ]
     }
-}
+}*/
+var manual =  {
+		   "credentials": {
+		            "peers": [
+		               {
+		                  "discovery_host": "172.17.0.3",
+		                  "discovery_port": 7051,
+		                  "api_host": "172.17.0.3",
+		                  "api_port_tls": 443,
+		                  "api_port": 7050,
+		                  "type": "peer",
+		                  "network_id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a",
+		                  "container_id": "c02320f5257a8a0ebcac1a7acdec1962c003fed47af6fc52c174a941db821d1b",
+		                  "id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a_vp1",
+		                  "api_url": "http://172.17.0.3:80"
+		               }
+		            ],
+		            "ca": {
+		               "e08fb9f9-d50e-4f08-8636-46a554c56a2a_ca": {
+		                  "url": "172.17.0.2:7054",
+		                  "discovery_host": "172.17.0.2",
+		                  "discovery_port": 7054,
+		                  "api_host": "172.17.0.2",
+		                  "api_port_tls": 7054,
+		                  "api_port": 80,
+		                  "type": "ca",
+		                  "network_id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a",
+		                  "container_id": "efecc93a3c0fbe431a45ce1c28184a57119e8536c1edd85e213cfa7d2b78a60a"
+		               }
+		            },
+		            "users": [
+		               {
+		                  "username": "user_type0_74cde9dd37",
+		                  "secret": "a3ff691067",
+		                  "enrollId": "user_type0_74cde9dd37",
+		                  "enrollSecret": "a3ff691067"
+		               },
+		               {
+		                  "username": "user_type0_ee680b55ac",
+		                  "secret": "888c3ae680",
+		                  "enrollId": "user_type0_ee680b55ac",
+		                  "enrollSecret": "888c3ae680"
+		               },
+/*		               {
+		                  "username": "user_type1_a38e23f53c",
+		                  "secret": "8fde12af6a",
+		                  "enrollId": "user_type1_a38e23f53c",
+		                  "enrollSecret": "8fde12af6a"
+		               },*/
+		               {
+			                  "username": "admin",
+			                  "secret": "Xurw3yU9zI0l",
+			                  "enrollId": "admin",
+			                  "enrollSecret": "Xurw3yU9zI0l"
+			           }
+		            ]
+		    }
+		}
 
 var peers = manual.credentials.peers;
 console.log('loading hardcoded peers');
