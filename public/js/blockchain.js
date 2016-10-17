@@ -29,7 +29,9 @@ function show_details(id){
 
 	var html = '<p class="blckLegend"> Block Height: ' + blocks[id].id + '</p>';
 	html += '<hr class="line"/><p>Created: &nbsp;' + formatDate(blocks[id].blockstats.transactions[0].timestamp.seconds * 1000, '%M-%d-%Y %I:%m%p') + ' UTC</p>';
-	html += '<p> UUID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocks[id].blockstats.transactions[0].uuid + '</p>';
+//	html += '<p> UUID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocks[id].blockstats.transactions[0].uuid + '</p>';
+	html += '<p> TX ID: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocks[id].blockstats.transactions[0].txid + '</p>';
+	html += '<p> Payload: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocks[id].blockstats.transactions[0].payload + '</p>';
 	html += '<p> Type:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + blocks[id].blockstats.transactions[0].type + '</p>';
 	html += '<p> CC ID:  &nbsp;&nbsp;&nbsp;&nbsp;' + atob(blocks[id].blockstats.transactions[0].chaincodeID) + '</p>';
 	$("#details").html(html).css("left", left).fadeIn();
