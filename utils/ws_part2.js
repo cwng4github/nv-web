@@ -38,7 +38,7 @@ module.exports.process_msg = function(ws, data, finInst){
 		}
 		else{
 			var data = JSON.parse(allTxs);
-			sendMsg({msg: 'allTxs', txs: data.transactions});
+			sendMsg({msg: 'allTxs', all_txs: data.transactions});
 		}
 	}
 	

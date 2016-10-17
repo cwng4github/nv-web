@@ -239,7 +239,7 @@ function connect_to_server(){
 			var data = JSON.parse(msg.data);
 
 			if(data.msg === 'allTxs'){
-				build_transactions(data.txs, null);
+				build_transactions(data.all_txs, null);
 			}
 			else if(data.msg === 'chainstats'){
 				if(data.blockstats.transactions)
