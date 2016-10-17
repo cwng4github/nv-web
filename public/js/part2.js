@@ -99,6 +99,7 @@ $(document).on('ready', function() {
 	$("#submit").click(function(){
 		if(user.username){
 			var obj = 	{
+							username: user.username, 
 							type: "submitTx",
 							tx: {
 								refNumber: $("input[name='RefNumber']").val(),
@@ -156,8 +157,8 @@ $(document).on('ready', function() {
 	
 	$("#dashboardLink").click(function(){
 		if(user.username) {
-			ws.send(JSON.stringify({type: "get_nvaccounts", v: 2}));
-			ws.send(JSON.stringify({type: "get_txs", v: 2}));
+			ws.send(JSON.stringify({username: user.username, type: "get_nvaccounts", v: 2}));
+			ws.send(JSON.stringify({username: user.username, type: "get_txs", v: 2}));
 		}
 	});
 	
@@ -327,8 +328,8 @@ function connect_to_server(){
 			}
 			else if(data.msg === 'reset'){						
 				if(user.username) {
-					ws.send(JSON.stringify({type: "get_nvaccounts", v: 2}));
-					ws.send(JSON.stringify({type: "get_txs", v: 2}));
+					ws.send(JSON.stringify({username: user.username, type: "get_nvaccounts", v: 2}));
+					ws.send(JSON.stringify({username: user.username, type: "get_txs", v: 2}));
 				}
 			}
 		}
