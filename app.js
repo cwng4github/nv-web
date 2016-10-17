@@ -263,16 +263,16 @@ var manual =  {
 		   "credentials": {
 		            "peers": [
 		               {
-		                  "discovery_host": "172.17.0.3",
-		                  "discovery_port": 7051,
-		                  "api_host": "172.17.0.3",
-		                  "api_port_tls": 443,
+		                  "name": "vp1-172.17.0.3",
+		            	  "api_host": "172.17.0.3",		                  
 		                  "api_port": 7050,
-		                  "type": "peer",
-		                  "network_id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a",
-		                  "container_id": "c02320f5257a8a0ebcac1a7acdec1962c003fed47af6fc52c174a941db821d1b",
-		                  "id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a_vp1",
-		                  "api_url": "http://172.17.0.3:80"
+		                  //"api_port_tls": 443,
+		                  "id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a_vp1",		                  
+		                  "enrollID": "user1"
+		                  //"type": "peer",
+		                  //"network_id": "e08fb9f9-d50e-4f08-8636-46a554c56a2a",
+		                  //"container_id": "c02320f5257a8a0ebcac1a7acdec1962c003fed47af6fc52c174a941db821d1b",
+		                  //"api_url": "http://172.17.0.3:7050"
 		               }
 		            ],
 		            "ca": {
@@ -354,16 +354,21 @@ var options = 	{
 					network:{
 						peers: peers,
 						users: users,
+						options: {                          //this is optional
+							quiet: false, 
+							timeout: 60000,
+							tls: false
+			            }	
 					},
 					chaincode:{
-						zip_url: 'https://github.com/mcenatie/nv-chaincode/archive/master.zip',
-						unzip_dir: 'nv-chaincode-master',									//subdirectroy name of chaincode after unzipped
-						git_url: 'https://github.com/mcenatie/nv-chaincode',			//GO git http url
+						zip_url: 'https://github.com/cwng4github/nv-chaincode/archive/docker_ready.zip',                                 // 'https://github.com/mcenatie/nv-chaincode/archive/master.zip', // 
+						unzip_dir: 'nv-chaincode-docker_ready',							//subdirectroy name of chaincode after unzipped  // 'nv-chaincode-master', //
+						git_url: 'https://github.com/cwng4github/nv-chaincode',			//GO git http url                                // 'https://github.com/mcenatie/nv-chaincode', // 
 					
 						//hashed cc name from prev deployment
-						//deployed_name: 'mycc'
-						deployed_name: '4f1bf6581ebe31326cf8ae669859225f1ef65ec6b718142f1e30a4dc9c9dbd51c3ddcc2ff070542c8c3d38e82d81c7690da5db7a0fbc3383874787816e2a4017'
-					}
+						deployed_name: 'mycc'
+						//deployed_name: '4f1bf6581ebe31326cf8ae669859225f1ef65ec6b718142f1e30a4dc9c9dbd51c3ddcc2ff070542c8c3d38e82d81c7690da5db7a0fbc3383874787816e2a4017'
+					}				
 				};
 if(process.env.VCAP_SERVICES){
 	console.log('\n[!] looks like you are in bluemix, I am going to clear out the deploy_name so that it deploys new cc.\n[!] hope that is ok budddy\n');
@@ -381,7 +386,7 @@ function cb_ready(err, cc){																	//response has chaincode functions
 		chaincode = cc;
 		part2.setup(ibc, cc);
 		if(!cc.details.deployed_name || cc.details.deployed_name === ""){												//decide if i need to deploy
-			cc.deploy('init', [], './cc_summaries', cb_deployed);
+			cc.deploy('init', ['99'], {save_path: './cc_summaries', delay_ms: 60000}, cb_deployed);
 		}
 		else{
 			console.log('chaincode summary file indicates chaincode has been previously deployed');
@@ -403,18 +408,23 @@ function cb_deployed(e, d){
 		ibc.save('./cc_summaries');															//save it here for chaincode investigator
 		wss = new ws.Server({server: server});												//start the websocket now
 		wss.on('connection', function connection(ws) {
-			ws.on('message', function incoming(message) {
+			ws.on('message', function incoming(message) {				
 				console.log('received ws msg:', message);
 				var data = JSON.parse(message);
 				var finInst = null
-				parseCookie(ws.upgradeReq, null, function(err) {
-			        var sessionID = ws.upgradeReq.signedCookies['connect.sid'];
-			        sessionStore.get(sessionID, function(err, sess) {
-				    	if(sess){
-				    		part2.process_msg(ws, data, sess.username);
-				    	}
-				    });
-			    }); 
+				//parseCookie(ws.upgradeReq, null, function(err) {
+			
+					//sessionStore.all(function(err, sessions) {
+					//	console.log("test - sessions: ", sessions);
+					//});
+					
+					//var sessionID = ws.upgradeReq.signedCookies['connect.sid'];
+					//sessionStore.get(sessionID, function(err, sess) {
+			        //	if(sess){
+				    		part2.process_msg(ws, data, data.username);//sess.username);
+			        //	}
+				    //});
+			    //}); 
 			});
 			
 			ws.on('close', function(){});

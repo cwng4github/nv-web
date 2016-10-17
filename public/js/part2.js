@@ -220,10 +220,10 @@ function connect_to_server(){
 		connected = true;
 		clear_blocks();
 		$("#errorNotificationPanel").fadeOut();
-		ws.send(JSON.stringify({type: "chainstats", v:2}));
+		ws.send(JSON.stringify({username: user.username, type: "chainstats", v:2}));
 		if(user.username) {
-			ws.send(JSON.stringify({type: "get_nvaccounts", v: 2}));
-			ws.send(JSON.stringify({type: "get_txs", v: 2}));
+			ws.send(JSON.stringify({username: user.username, type: "get_nvaccounts", v: 2}));
+			ws.send(JSON.stringify({username: user.username, type: "get_txs", v: 2}));
 		}
 
 	}
@@ -289,6 +289,7 @@ function connect_to_server(){
 						 $("#n2Balance").addClass("good");
 					}
 				}
+				if(data.nvAccounts.vostro){
 				if(data.nvAccounts.vostro[0].accounts){
 					//Vostro 1					
 					$("#v1Holder").html(formatUsername(data.nvAccounts.vostro[0].accounts[0].holder));
@@ -321,6 +322,7 @@ function connect_to_server(){
 						 $("#v2Balance").removeClass("bad");
 						 $("#v2Balance").addClass("good");
 					}
+				}
 				}
 			}
 			else if(data.msg === 'reset'){						

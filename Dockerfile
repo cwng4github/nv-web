@@ -12,6 +12,7 @@ RUN mkdir -p /cp-demo
 COPY . /cp-demo/
 RUN cd /cp-demo ; npm install --production
 WORKDIR /cp-demo
+COPY ibm-blockchain-js_index.js /cp-demo/node_modules/ibm-blockchain-js/index.js
 
 RUN chmod +x start.sh
 

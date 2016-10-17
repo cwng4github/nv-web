@@ -19,17 +19,17 @@ module.exports.process_msg = function(ws, data, finInst){
 	}
 	else if(data.type == 'get_nvaccounts'){
 		console.log('Get Nostro Vostro Accounts', finInst );
-		chaincode.query(['getNVAccounts', finInst], cb_got_nv_accounts);
+		chaincode.query.getNVAccounts(['getNVAccounts', finInst], cb_got_nv_accounts);
 	}
 	else if(data.type == 'submitTx'){
 		console.log('Submit Transaction', data);
 		if(data.tx){
-			chaincode.submitTx([data.tx.refNumber,data.tx.opCode,data.tx.date,data.tx.currency,data.tx.amount,finInst,data.tx.receiver,data.tx.ordCust,data.tx.benefCust,data.tx.detCharges], cb_invoked);				//create a new paper
+			chaincode.invoke.submitTx([data.tx.refNumber,data.tx.opCode,data.tx.date,data.tx.currency,data.tx.amount,finInst,data.tx.receiver,data.tx.ordCust,data.tx.benefCust,data.tx.detCharges], cb_invoked);				//create a new paper
 		}
 	}
 	else if(data.type == 'get_txs'){
 		console.log('Get Transactions', finInst);
-		chaincode.query(['getTxs', finInst], cb_got_txs);
+		chaincode.query.getTxs(['getTxs', finInst], cb_got_txs);
 	}
 	
 	function cb_got_txs(e, allTxs){
@@ -37,7 +37,8 @@ module.exports.process_msg = function(ws, data, finInst){
 			console.log('Get Transactions error', e);
 		}
 		else{
-			sendMsg({msg: 'allTxs', txs: allTxs.transactions});
+			var data = JSON.parse(allTxs);
+			sendMsg({msg: 'allTxs', txs: data.transactions});
 		}
 	}
 	
@@ -47,7 +48,7 @@ module.exports.process_msg = function(ws, data, finInst){
 		}
 		else{
 			//console.log(nvAccounts);
-			sendMsg({msg: 'nvAccounts', nvAccounts: nvAccounts});
+			sendMsg({msg: 'nvAccounts', nvAccounts: JSON.parse(nvAccounts)});
 		}
 	}
 	
